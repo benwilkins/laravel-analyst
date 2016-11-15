@@ -1,0 +1,22 @@
+{
+    "name": "benwilkins/laravel-analyst",
+    "description": "An analytics package for Laravel",
+    "authors": [
+        {
+            "name": "Ben Wilkins",
+            "email": "bentwilkins@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Benwilkins\\Analyst\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Benwilkins\\Analyst\\Tests\\": "tests/"
+        }
+    }
+}
