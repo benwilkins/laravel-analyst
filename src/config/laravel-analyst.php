@@ -4,7 +4,7 @@ return [
     /*
      * Path to the client secret json file.
      */
-    'google_account_credentials_json' => storage_path('app/laravel-analyst/Google/account-credentials.json'),
+    'google_account_credentials_json' => storage_path('app/laravel-analyst/Google/google_service_account_credentials.json'),
     /*
      * The amount of minutes the Google API responses will be cached.
      * If you set this to zero, the responses won't be cached at all.

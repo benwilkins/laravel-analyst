@@ -5,6 +5,8 @@ namespace Benwilkins\Analyst\Clients\Internal\Metrics;
 
 
 use App\User;
+use Benwilkins\Analyst\AnalystDataCollection;
+use Benwilkins\Analyst\AnalystDataGroup;
 use Benwilkins\Analyst\Period;
 
 class NewUsersMetric extends Metric
@@ -14,19 +16,40 @@ class NewUsersMetric extends Metric
      */
     public function run(Period $period, $params = [])
     {
-        $data = [
-            'total' => User::whereDate('created_at', '>=', $period->start)->whereDate('created_at', '<=', $period->end)->count(),
-            'points' => [['Date', 'Users']]
-        ];
+        $data = new AnalystDataCollection();
+        $dataGroup = new AnalystDataGroup();
+
+        $data->setTotal($this->getTotalNewUsers($period));
+        $dataGroup->addDataPoint(['Date', 'Users']);
 
         /** @var \Carbon\Carbon $interval */
         foreach ($period->interval() as $interval) {
-            array_push($data['points'], [
+            $dataGroup->addDataPoint([
                 $interval->format('M j'),
-                User::whereDate('created_at', $interval->format('Y-m-d'))->count()
+                $this->getNewUsersCountByDate($interval)
             ]);
         }
 
-        return collect($data);
+        $data->addGroup($dataGroup);
+
+        return $data;
+    }
+
+    /**
+     * @param Period $period
+     * @return mixed
+     */
+    protected function getTotalNewUsers(Period $period)
+    {
+        return User::whereDate('created_at', '>=', $period->start)->whereDate('created_at', '<=', $period->end)->count();
+    }
+
+    /**
+     * @param $interval
+     * @return mixed
+     */
+    protected function getNewUsersCountByDate($interval)
+    {
+        return User::whereDate('created_at', $interval->format('Y-m-d'))->count();
     }
 }

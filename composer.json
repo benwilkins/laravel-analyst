@@ -8,7 +8,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "google/apiclient": "^2.1"
+    },
     "autoload": {
         "psr-4": {
             "Benwilkins\\Analyst\\": "src/"

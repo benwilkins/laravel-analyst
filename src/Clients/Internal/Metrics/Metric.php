@@ -4,6 +4,7 @@
 namespace Benwilkins\Analyst\Clients\Internal\Metrics;
 
 
+use Benwilkins\Analyst\AnalystDataCollection;
 use Benwilkins\Analyst\Period;
 
 abstract class Metric
@@ -13,7 +14,7 @@ abstract class Metric
      *
      * @param Period $period
      * @param array $params
-     * @return \Illuminate\Support\Collection
+     * @return AnalystDataCollection
      */
     abstract public function run(Period $period, $params = []);
 }
