@@ -113,15 +113,60 @@ $data = Analyst::metric('new users', Period::days(30));
 
 ## Google Analytics Client
 
-Coming soon...
+The Google Analytics Client uses the Analytics Reporting API. You'll need to get a Google Service Account Key from the Google Developers Console:
+1. In the console, follow the steps to create a new app.
+2. Enable the Analytics Reporting API
+3. Click on the Credentials tab, and follow the steps to create credentials.
+4. Select Service Account Key as the credential type.
+5. Select a New Service Account and give it a name. Choose JSON as the Key Type.
+6. Download the JSON file and save it in the location specified in the package config file.
 
-## Testing
+Finally, you'll need to grant permissions to your Google Analytics property: 
+1. Go to "User Management" in the admin section of the property.
+2. Use the email address found in the `client_email` key from the JSON file you downloaded. Read only access is sufficient.
 
-Run the tests with:
+### Options
+The Google Analytics client offers some options for configuration:
 
-``` bash
-vendor/bin/phpunit
+* `viewId` (required): The ID for the Google Analytics view you wish to pull from. This can be set as a default in the config file.
+* `dimensions`: An array of dimensions to add to the query.
+* `alias`: An optional alias to use for the metric name
+* `groupByDimensions`: This option allows you to group results by dimensions. Pass an array of the indicies of the dimensions you wish you group by from the `dimensions` option. See example below.
+
+### Example
+
+This example queries for events, accepting the `ga:eventCategory`, `ga:eventAction`, `ga:eventLabel`, and `ga:date` dimensions. The results are grouped by a combination of `ga:eventCategory` and `ga:eventAction`.
+
+```php
+$metric = Analyst::metric(
+    ['ga:totalEvents'],
+    Period::days(14),
+    Analyst::client('google'),
+    [
+        'viewId' => 'XXXXXX', // <- YOUR VIEW ID
+        'dimensions' => ['ga:eventCategory', 'ga:eventAction', 'ga:eventLabel', 'ga:date'],
+        'alias' => ['events'],
+        'groupByDimensions' => [0, 1]
+    ]);
 ```
+
+The value of `$metric` will be an instance of `AnalystDataCollection`.
+
+## Accessing your data
+### Analyst Data Collections
+
+Both clients return an instance of `AnalystDataCollection`. This collection has some accessor methods making it easy to use your data:
+
+* `getTotal`: Returns the total number for the metric requested.
+* `getGroups`: Returns an array of `AnalystDataGroup` objects.
+* `getRaw`: Returns the data in the original raw format.
+
+### Analyst Data Groups
+
+The `AnalystDataGroup` class is a grouping of your data. Each metric call will have a minimum of one group. A group consists of two main properties: `total`, and `points`.
+
+* `getTotal`: Returns the total metric number for that grouping.
+* `getPoints`: Returns the data points for each group, formatted in a way that can be used with Google Charts.
 
 ## Contributing
 
