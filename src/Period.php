@@ -70,9 +70,11 @@ class Period
     {
         $start = Carbon::instance($this->start);
         $end = Carbon::instance($this->end);
-        $intervals = [$start];
+        $intervals = [];
 
         if ($start->isSameDay($end)) {
+            $intervals = [$start];
+
             return $intervals;
         }
 
