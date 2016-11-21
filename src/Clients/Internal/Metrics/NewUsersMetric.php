@@ -19,6 +19,7 @@ class NewUsersMetric extends Metric
         $data = new AnalystDataCollection();
         $dataGroup = new AnalystDataGroup();
 
+        $data->setPeriod($period);
         $data->setTotal($this->getTotalNewUsers($period));
         $dataGroup->addDataPoint(['Date', 'Users']);
 

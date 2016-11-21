@@ -44,7 +44,10 @@ class Client implements AnalystClientInterface
     {
         $this->initializeAnalytics();
 
-        return $this->formatReportResult($this->getReport($metricName, $period, $params), $params);
+        $data = $this->formatReportResult($this->getReport($metricName, $period, $params), $params);
+        $data->setPeriod($period);
+
+        return $data;
     }
 
     /**

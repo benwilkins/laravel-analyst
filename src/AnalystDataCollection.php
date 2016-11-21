@@ -11,6 +11,10 @@ namespace Benwilkins\Analyst;
 class AnalystDataCollection
 {
     /**
+     * @var Period
+     */
+    protected $period;
+    /**
      * @var int
      */
     protected $total;
@@ -22,6 +26,22 @@ class AnalystDataCollection
      * @var mixed
      */
     protected $raw;
+
+    /**
+     * @return Period
+     */
+    public function getPeriod()
+    {
+        return $this->period;
+    }
+
+    /**
+     * @param Period $period
+     */
+    public function setPeriod($period)
+    {
+        $this->period = $period;
+    }
 
     /**
      * @return int
