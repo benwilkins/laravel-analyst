@@ -13,19 +13,19 @@ class AnalystDataCollection
     /**
      * @var Period
      */
-    protected $period;
+    public $period;
     /**
      * @var int
      */
-    protected $total;
+    public $total;
     /**
      * @var array
      */
-    protected $groups = [];
+    public $groups = [];
     /**
      * @var mixed
      */
-    protected $raw;
+    public $raw;
 
     /**
      * @return Period

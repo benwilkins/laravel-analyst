@@ -13,15 +13,15 @@ class AnalystDataGroup
     /**
      * @var int
      */
-    protected $total = 0;
+    public $total = 0;
     /**
      * @var array
      */
-    protected $points = [];
+    public $points = [];
     /**
      * @var string
      */
-    protected $groupHandle;
+    public $groupHandle;
 
     /**
      * @return int

@@ -168,6 +168,10 @@ The `AnalystDataGroup` class is a grouping of your data. Each metric call will h
 * `getTotal`: Returns the total metric number for that grouping.
 * `getPoints`: Returns the data points for each group, formatted in a way that can be used with Google Charts.
 
+## Roadmap
+* Add caching to Google and Internal clients
+* Add Artisan command to make new internal metrics
+
 ## Security
 
 If you discover any security related issues, please use the issue tracker on GitHub.
