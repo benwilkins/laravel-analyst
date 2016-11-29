@@ -8,6 +8,7 @@ use App\User;
 use Benwilkins\Analyst\AnalystDataCollection;
 use Benwilkins\Analyst\AnalystDataGroup;
 use Benwilkins\Analyst\Period;
+use Carbon\Carbon;
 
 class NewUsersMetric extends Metric
 {
@@ -32,6 +33,8 @@ class NewUsersMetric extends Metric
         }
 
         $data->addGroup($dataGroup);
+        $data->setGeneratedAt(Carbon::now());
+        $data->setGolden($this->isGolden($period));
 
         return $data;
     }

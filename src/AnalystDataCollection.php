@@ -3,6 +3,8 @@
 
 namespace Benwilkins\Analyst;
 
+use Carbon\Carbon;
+
 
 /**
  * Class AnalystDataCollection
@@ -26,6 +28,10 @@ class AnalystDataCollection
      * @var mixed
      */
     public $raw;
+    /**
+     * @var Carbon
+     */
+    public $generated_at;
     /**
      * @var bool
      */
@@ -98,6 +104,22 @@ class AnalystDataCollection
     public function setRaw($raw)
     {
         $this->raw = $raw;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getGeneratedAt()
+    {
+        return $this->generated_at;
+    }
+
+    /**
+     * @param Carbon $generated_at
+     */
+    public function setGeneratedAt($generated_at)
+    {
+        $this->generated_at = $generated_at;
     }
 
     /**
