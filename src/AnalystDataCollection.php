@@ -26,6 +26,10 @@ class AnalystDataCollection
      * @var mixed
      */
     public $raw;
+    /**
+     * @var bool
+     */
+    protected $golden = false;
 
     /**
      * @return Period
@@ -94,5 +98,21 @@ class AnalystDataCollection
     public function setRaw($raw)
     {
         $this->raw = $raw;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isGolden()
+    {
+        return $this->golden;
+    }
+
+    /**
+     * @param boolean $golden
+     */
+    public function setGolden($golden)
+    {
+        $this->golden = $golden;
     }
 }
