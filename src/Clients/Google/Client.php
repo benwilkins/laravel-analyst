@@ -223,6 +223,36 @@ class Client implements AnalystClientInterface
         return $group;
     }
 
+    /**
+     * @param $rows
+     * @param $dimensionHeader
+     * @return AnalystDataGroup
+     * @note This currently isn't used. Passing data with no dimensions breaks it, but keeping
+     * it here just in case we need it later.
+     */
+    protected function createDataGroupFromRows($rows, $dimensionHeader)
+    {
+        $group = new AnalystDataGroup();
+        $total = 0;
+
+        $group->addDataPoint($this->createDataPointColumnsFromDimensions($dimensionHeader));
+
+        /** @var \Google_Service_AnalyticsReporting_ReportRow $row */
+        foreach ($rows as $row) {
+            $value = $row->getMetrics()[0]->getValues()[0];
+            $point = $row->getDimensions();
+
+            array_push($point, $value);
+            $group->addDataPoint($point);
+
+            $total += $value;
+        }
+
+        $group->setTotal($total);
+
+        return $group;
+    }
+
     protected function createDataGroupsForDimensions($rows, $groupByDimensions, $dimensionHeader)
     {
         $groups = [];
