@@ -9,6 +9,7 @@ use Benwilkins\Analyst\AnalystDataGroup;
 use Benwilkins\Analyst\Clients\AnalystClientInterface;
 use Benwilkins\Analyst\Exceptions\InvalidMetricException;
 use Benwilkins\Analyst\Period;
+use Carbon\Carbon;
 
 class Client implements AnalystClientInterface
 {
@@ -177,7 +178,7 @@ class Client implements AnalystClientInterface
         /** @var \Google_Service_AnalyticsReporting_ColumnHeader $header */
         $header = $report->getColumnHeader();
         $dimensionHeader = $header->getDimensions();
-//        $metricHeaders = $header->getMetricHeader()->getMetricHeaderEntries();
+        $metricHeaders = $header->getMetricHeader()->getMetricHeaderEntries();
 
         /** @var \Google_Service_AnalyticsReporting_ReportData $responseData */
         $responseData = $report->getData();
@@ -186,7 +187,7 @@ class Client implements AnalystClientInterface
 
         $groups = ($this->shouldGroupByDimensions($params))
             ? $this->createDataGroupsForDimensions($responseData->getRows(), $params['groupByDimensions'], $dimensionHeader)
-            : [$this->createDataGroupFromRows($responseData->getRows(), $dimensionHeader)];
+            : [$this->createDataGroupFromMetric($responseData->getRows(), $metricHeaders)];
 
         foreach ($groups as $group) {
             $formattedData->addGroup($group);
@@ -208,27 +209,15 @@ class Client implements AnalystClientInterface
 
     /**
      * @param $rows
-     * @param $dimensionHeader
+     * @param $metricHeader
      * @return AnalystDataGroup
      */
-    protected function createDataGroupFromRows($rows, $dimensionHeader)
+    protected function createDataGroupFromMetric($rows, $metricHeader)
     {
         $group = new AnalystDataGroup();
-        $total = 0;
+        $total = $rows[0]->getMetrics()[0]->getValues()[0];
 
-        $group->addDataPoint($this->createDataPointColumnsFromDimensions($dimensionHeader));
-
-        /** @var \Google_Service_AnalyticsReporting_ReportRow $row */
-        foreach ($rows as $row) {
-            $value = $row->getMetrics()[0]->getValues()[0];
-            $point = $row->getDimensions();
-
-            array_push($point, $value);
-            $group->addDataPoint($point);
-
-            $total += $value;
-        }
-
+        $group->setGroupHandle($metricHeader[0]->name);
         $group->setTotal($total);
 
         return $group;
